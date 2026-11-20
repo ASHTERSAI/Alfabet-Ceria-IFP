@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 210" fill="none">
+  <style>
+    @keyframes tearStream {
+      0% { transform: translateY(0px) scaleY(0.85); opacity: 0.95; }
+      70% { transform: translateY(22px) scaleY(1.15); opacity: 0.9; }
+      100% { transform: translateY(34px) scaleY(0.7); opacity: 0; }
+    }
+    @keyframes bodySob {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(3px); }
+    }
+    @keyframes handWipe {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-6deg); }
+    }
+    .sob-group { animation: bodySob 0.55s ease-in-out infinite; transform-origin: 90px 150px; }
+    .tear-l1 { animation: tearStream 0.85s ease-in infinite; }
+    .tear-l2 { animation: tearStream 0.85s ease-in 0.42s infinite; }
+    .tear-r1 { animation: tearStream 0.85s ease-in 0.2s infinite; }
+    .tear-r2 { animation: tearStream 0.85s ease-in 0.62s infinite; }
+    .arm-wipe { animation: handWipe 0.55s ease-in-out infinite; transform-origin: 54px 116px; }
+  </style>
+
+  <ellipse cx="90" cy="198" rx="44" ry="7" fill="#CBD5E1" opacity="0.6"/>
+
+  <g class="sob-group">
+    <rect x="68" y="158" width="14" height="28" rx="6" fill="#FDBA74"/>
+    <rect x="98" y="158" width="14" height="28" rx="6" fill="#FDBA74"/>
+    <rect x="68" y="172" width="14" height="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    <rect x="98" y="172" width="14" height="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    <path d="M62 186 H84 V194 C84 196 82 197 80 197 H60 C58 197 57 195 58 192 Z" fill="#1E293B"/>
+    <path d="M96 186 H118 L122 192 C123 195 122 197 120 197 H100 C98 197 96 196 96 194 Z" fill="#1E293B"/>
+
+    <path d="M58 134 H122 L127 164 H94 L90 152 L86 164 H53 Z" fill="#DC2626" stroke="#991B1B" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="58" y="131" width="64" height="6" rx="2" fill="#1E293B"/>
+    <rect x="85" y="130" width="10" height="8" rx="1.5" fill="#FACC15" stroke="#B45309" stroke-width="1"/>
+
+    <path d="M55 98 C55 92 63 88 72 88 H108 C117 88 125 92 125 98 L122 132 H58 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2.5"/>
+    <polygon points="75,88 90,101 82,107" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+    <polygon points="105,88 90,101 98,107" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+    <polygon points="87,98 93,98 95,122 90,128 85,122" fill="#DC2626" stroke="#991B1B" stroke-width="1.5"/>
+    <polygon points="86,96 94,96 92,102 88,102" fill="#B91C1C"/>
+
+    <rect x="100" y="106" width="16" height="17" rx="2" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+    <rect x="103" y="109" width="10" height="5" fill="#DC2626"/>
+    <rect x="103" y="114" width="10" height="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.8"/>
+
+    <path d="M123 96 L136 124 C138 129 132 133 127 129 L118 112" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="131" cy="128" r="6.5" fill="#FDBA74"/>
+
+    <g class="arm-wipe">
+      <path d="M57 96 L43 82 C39 78 44 72 49 75 L65 89" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="46" cy="77" r="6.5" fill="#FDBA74"/>
+    </g>
+
+    <circle cx="90" cy="56" r="32" fill="#FDBA74" stroke="#EA580C" stroke-width="2"/>
+    <path d="M58 52 C58 29 72 20 90 20 C108 20 122 29 122 52 C117 40 107 36 90 36 C73 36 63 40 58 52 Z" fill="#1E293B"/>
+    <path d="M62 34 C65 18 115 18 118 34 Z" fill="#DC2626" stroke="#991B1B" stroke-width="2"/>
+    <path d="M77 34 C79 21 101 21 103 34 Z" fill="#FFFFFF"/>
+    <path d="M56 34 Q90 40 124 34" stroke="#991B1B" stroke-width="3.5" stroke-linecap="round"/>
+
+    <path d="M70 48 L82 52" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+    <path d="M110 48 L98 52" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+
+    <path d="M71 55 L81 60 L71 64" stroke="#1E293B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M109 55 L99 60 L109 64" stroke="#1E293B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <ellipse cx="69" cy="68" rx="5.5" ry="3.5" fill="#FB7185" opacity="0.55"/>
+    <ellipse cx="111" cy="68" rx="5.5" ry="3.5" fill="#FB7185" opacity="0.55"/>
+
+    <path d="M80 77 Q90 67 100 77 Q90 84 80 77 Z" fill="#E11D48" stroke="#9F1239" stroke-width="2"/>
+    <path d="M84 77 Q90 74 96 77" fill="#FDA4AF"/>
+
+    <path class="tear-l1" d="M73 63 C70 69 70 74 73 74 C76 74 76 69 73 63 Z" fill="#38BDF8"/>
+    <path class="tear-l2" d="M68 66 C65 72 65 77 68 77 C71 77 71 72 68 66 Z" fill="#0EA5E9"/>
+    <path class="tear-r1" d="M107 63 C104 69 104 74 107 74 C110 74 110 69 107 63 Z" fill="#38BDF8"/>
+    <path class="tear-r2" d="M112 66 C109 72 109 77 112 77 C115 77 115 72 112 66 Z" fill="#0EA5E9"/>
+  </g>
+</svg>

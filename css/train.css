@@ -1,0 +1,621 @@
+/* ==========================================================================
+   GAME KERETA CEPAT WUSH - OPTIMASI IFP 75" (16:9 - ZERO SCROLL)
+   Layar Atas : Lintasan Balap (FINISH vertikal di kiri, 2 kereta melaju ke kiri)
+   Layar Bawah:
+     - Mode 1 Pemain (Solo vs Robot): 2 Kotak (Kiri: Player Murid 1 | Kanan: Bank Abjad)
+     - Mode 2 Pemain (VS): 3 Kotak (Kiri: Murid 1 | Tengah: Bank Abjad | Kanan: Murid 2)
+   ========================================================================== */
+
+.view-train {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(1.15 * var(--u));
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* TOOLBAR ATAS KERETA WUSH */
+.train-toolbar {
+  flex: 0 0 auto;
+  height: calc(5.4 * var(--u));
+  background: var(--surface);
+  border: 2.5px solid var(--border-soft);
+  border-radius: calc(1.6 * var(--u));
+  padding: 0 calc(1.8 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(1.2 * var(--u));
+  box-shadow: var(--shadow-sm);
+}
+
+.train-tool-group {
+  display: flex;
+  align-items: center;
+  gap: calc(0.75 * var(--u));
+}
+
+.train-pill-switch {
+  display: inline-flex;
+  background: #F1F5F9;
+  padding: calc(0.28 * var(--u));
+  border-radius: calc(1 * var(--u));
+  border: 1.5px solid #CBD5E1;
+  gap: calc(0.32 * var(--u));
+}
+
+.train-tab {
+  padding: calc(0.42 * var(--u)) calc(1.15 * var(--u));
+  border-radius: calc(0.75 * var(--u));
+  font-size: calc(1.22 * var(--u));
+  font-weight: 800;
+  color: var(--ink-700);
+  white-space: nowrap;
+}
+
+.train-tab.is-active {
+  background: var(--orange-600);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+
+.train-tab.is-active-blue {
+  background: var(--blue-600);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+
+.train-tool-label {
+  font-size: calc(1.18 * var(--u));
+  font-weight: 800;
+  color: var(--ink-500);
+}
+
+.btn-train-reset {
+  background: var(--amber-500);
+  color: #FFFFFF;
+  font-size: calc(1.25 * var(--u));
+  font-weight: 900;
+  padding: calc(0.55 * var(--u)) calc(1.4 * var(--u));
+  border-radius: calc(0.95 * var(--u));
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-train-reset:hover { background: var(--orange-600); }
+
+/* ==========================================================================
+   LAYAR ATAS: ARENA LINTASAN BALAP KERETA (FINISH KIRI <- KERETA KANAN)
+   ========================================================================== */
+.train-race-stage {
+  flex: 0 0 auto;
+  height: calc(25.2 * var(--u));
+  width: 100%;
+  background: linear-gradient(180deg, #E0F2FE 0%, #F0F9FF 48%, #ECFDF5 52%, #DCFCE7 100%);
+  border: 3px solid #93C5FD;
+  border-radius: calc(2.2 * var(--u));
+  padding: calc(1.1 * var(--u)) calc(1.6 * var(--u));
+  display: flex;
+  align-items: stretch;
+  gap: calc(1.4 * var(--u));
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Gerbang FINISH Vertikal di Kiri (Sesuai Desain Lampiran) */
+.train-finish-gate {
+  flex: 0 0 auto;
+  width: calc(6.2 * var(--u));
+  background: repeating-linear-gradient(
+    180deg,
+    #FFFFFF 0px,
+    #FFFFFF calc(1.4 * var(--u)),
+    #1E293B calc(1.4 * var(--u)),
+    #1E293B calc(2.8 * var(--u))
+  );
+  border: 3px solid #0F172A;
+  border-radius: calc(1.2 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(0.45 * var(--u));
+  box-shadow: var(--shadow-md);
+  z-index: 4;
+}
+
+.train-finish-inner {
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF;
+  border: 2px solid #0F172A;
+  border-radius: calc(0.75 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: calc(2.05 * var(--u));
+  font-weight: 900;
+  color: #DC2626;
+  line-height: 1;
+}
+
+/* Dua Jalur Rel Paralel */
+.train-tracks-col {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(1 * var(--u));
+}
+
+.train-lane {
+  flex: 1 1 0;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: calc(1.2 * var(--u));
+}
+
+.lane-tag {
+  position: absolute;
+  top: calc(0.2 * var(--u));
+  left: calc(0.8 * var(--u));
+  z-index: 3;
+  font-size: calc(1.2 * var(--u));
+  font-weight: 900;
+  padding: calc(0.22 * var(--u)) calc(1.1 * var(--u));
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(0.5 * var(--u));
+  box-shadow: var(--shadow-sm);
+}
+
+.lane-tag-p1 {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 2px solid #93C5FD;
+}
+
+.lane-tag-p2 {
+  background: #FFFBEB;
+  color: #B45309;
+  border: 2px solid #FCD34D;
+}
+
+/* Garis Rel Kereta */
+.train-rail {
+  width: 100%;
+  height: calc(1.1 * var(--u));
+  border-radius: 999px;
+  position: relative;
+  background: repeating-linear-gradient(
+    90deg,
+    #78350F 0px,
+    #78350F calc(1.2 * var(--u)),
+    transparent calc(1.2 * var(--u)),
+    transparent calc(2.6 * var(--u))
+  );
+  border-top: calc(0.32 * var(--u)) solid #2563EB;
+  border-bottom: calc(0.26 * var(--u)) solid #64748B;
+}
+
+.train-rail-p2 {
+  border-top-color: #EA580C;
+}
+
+/* Sprite Kereta Bergerak dari Kanan (start) ke Kiri (FINISH) */
+.train-runner {
+  position: absolute;
+  bottom: calc(1.4 * var(--u));
+  left: 80%;
+  width: calc(22 * var(--u));
+  height: calc(9.2 * var(--u));
+  transition: left 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.train-runner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.18));
+}
+
+.train-runner.is-zooming {
+  animation: trainWush 0.38s ease-out;
+}
+
+@keyframes trainWush {
+  0% { transform: scale(1) translateY(0); }
+  40% { transform: scale(1.06, 0.96) translateY(calc(-0.4 * var(--u))); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* ==========================================================================
+   LAYAR BAWAH: SUSUN GERBONG & BANK ABJAD (2 KOTAK SOLO / 3 KOTAK VS)
+   ========================================================================== */
+.train-lower-workspace {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  gap: calc(1.5 * var(--u));
+  overflow: hidden;
+}
+
+.train-lower-workspace.is-solo {
+  grid-template-columns: 1fr 1fr;
+}
+
+.train-lower-workspace.is-vs {
+  grid-template-columns: 1fr 1.18fr 1fr;
+}
+
+.train-box {
+  background: var(--surface);
+  border: 3px solid var(--border-soft);
+  border-radius: calc(2.1 * var(--u));
+  padding: calc(1 * var(--u)) calc(1.3 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.85 * var(--u));
+  min-height: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.train-box-p1 {
+  background: linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 30%, #F0FDF4 100%);
+  border-color: #93C5FD;
+}
+
+.train-box-bank {
+  background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 35%);
+  border-color: #FBBF24;
+}
+
+.train-box-p2 {
+  background: linear-gradient(180deg, #FFF7ED 0%, #FFFFFF 30%, #FEFCE8 100%);
+  border-color: #FDBA74;
+}
+
+.train-box-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(0.6 * var(--u));
+  padding-bottom: calc(0.55 * var(--u));
+  border-bottom: 2px solid rgba(148, 163, 184, 0.22);
+}
+
+.train-box-title {
+  font-size: calc(1.55 * var(--u));
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.train-box-counter {
+  font-size: calc(1.22 * var(--u));
+  font-weight: 900;
+  padding: calc(0.2 * var(--u)) calc(0.95 * var(--u));
+  border-radius: 999px;
+  background: #FFFFFF;
+  border: 2px solid var(--border-soft);
+}
+
+/* GRID SLOT HURUF (KIRI / KANAN) & GRID GERBONG BANK ABJAD */
+.train-slots-grid,
+.train-bank-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  gap: calc(0.8 * var(--u));
+  align-content: stretch;
+}
+
+/* Slot Huruf Kosong (Hanya Huruf, Menunggu Gerbong Ditarik ke Sini) */
+.train-slot {
+  position: relative;
+  border-radius: calc(1.3 * var(--u));
+  border: 2.5px dashed #94A3B8;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: #64748B;
+  transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+  overflow: visible;
+}
+
+.train-slot-p1 { border-color: #93C5FD; color: #3B82F6; }
+.train-slot-p2 { border-color: #FDBA74; color: #EA580C; }
+
+.train-slot-letter {
+  font-size: calc(3.2 * var(--u));
+  line-height: 1;
+  font-weight: 900;
+}
+
+.train-slot-sub {
+  font-size: calc(1.1 * var(--u));
+  font-weight: 800;
+  opacity: 0.72;
+}
+
+/* Slot saat gerbong melayang di atasnya */
+.train-slot.is-drop-hover {
+  transform: scale(1.06);
+  border-style: solid;
+  border-color: #10B981;
+  background: #ECFDF5;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
+  z-index: 4;
+}
+
+.train-slot.is-wrong-flash {
+  border-color: #E11D48 !important;
+  background: #FFE4E6 !important;
+  animation: wiggle 0.38s ease-in-out;
+}
+
+/* Slot Mini Lokomotif di Awal Kereta A-Z */
+.train-slot-loco {
+  border: 2.5px solid #2563EB;
+  background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+  border-radius: calc(1.3 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(3.2 * var(--u));
+  line-height: 1;
+}
+
+.train-slot-loco span {
+  font-size: calc(0.95 * var(--u));
+  font-weight: 900;
+  color: #1E3A8A;
+  margin-top: calc(0.2 * var(--u));
+}
+
+/* Slot yang SUDAH Terisi Gerbong (Berubah jadi Gerbong Berwarna dengan Roda!) */
+.train-slot.is-filled {
+  border-style: solid;
+  border-width: 3px;
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+  animation: popCorrect 0.32s ease-out;
+}
+
+.train-slot.is-filled .train-slot-letter {
+  text-shadow: 0 2px 4px rgba(15, 23, 42, 0.35);
+}
+
+.train-slot.is-filled::before,
+.train-slot.is-filled::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-0.55 * var(--u));
+  width: calc(1.5 * var(--u));
+  height: calc(1.5 * var(--u));
+  border-radius: 50%;
+  background: #1E293B;
+  border: 2px solid #F8FAFC;
+}
+
+.train-slot.is-filled::before { left: 16%; }
+.train-slot.is-filled::after { right: 16%; }
+
+/* GERBONG KERETA DI BANK ABJAD (DRAGGABLE MULTI-TOUCH) */
+.bank-carriage {
+  position: relative;
+  border-radius: calc(1.35 * var(--u));
+  border: 3px solid transparent;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.14), inset 0 3px 0 rgba(255, 255, 255, 0.32);
+  cursor: grab;
+  touch-action: none;
+  transition: transform 0.12s ease, opacity 0.15s ease;
+  margin-bottom: calc(0.55 * var(--u));
+}
+
+.bank-carriage:active { cursor: grabbing; }
+
+/* Atap & Roda Gerbong Kereta */
+.bank-carriage::before,
+.bank-carriage::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-0.7 * var(--u));
+  width: calc(1.65 * var(--u));
+  height: calc(1.65 * var(--u));
+  border-radius: 50%;
+  background: #1E293B;
+  border: 2px solid #FACC15;
+  pointer-events: none;
+}
+
+.bank-carriage::before { left: 15%; }
+.bank-carriage::after { right: 15%; }
+
+.carriage-letter {
+  font-size: calc(3.2 * var(--u));
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(15, 23, 42, 0.35);
+}
+
+.carriage-lower {
+  font-size: calc(1.25 * var(--u));
+  font-weight: 800;
+  opacity: 0.92;
+  line-height: 1;
+}
+
+.bank-carriage.is-dragging {
+  opacity: 0.25;
+  transform: scale(0.92);
+}
+
+.bank-carriage.is-selected {
+  box-shadow: 0 0 0 4px #10B981, 0 8px 18px rgba(16, 185, 129, 0.35);
+  transform: scale(1.06);
+  z-index: 6;
+}
+
+.bank-carriage.is-used {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Gerbong Melayang di Bawah Jari Saat Ditarik (Multi-Touch Ghost) */
+.carriage-ghost {
+  position: fixed;
+  z-index: 85;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.14);
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.28), inset 0 3px 0 rgba(255, 255, 255, 0.4);
+  margin: 0 !important;
+}
+
+/* Ukuran Font Dinamis Saat Mode A-Z (26 Huruf) */
+.is-dense .train-slot-letter,
+.is-dense .carriage-letter {
+  font-size: calc(2.55 * var(--u));
+}
+
+.is-dense .train-slot-sub,
+.is-dense .carriage-lower {
+  font-size: calc(1 * var(--u));
+}
+
+/* ==========================================================================
+   MENU UTAMA BARU: 4 KARTU ATAS + BANNER MODE ADU / VS (3 GAME ADU)
+   ========================================================================== */
+.menu-grid-4 {
+  width: 100%;
+  max-width: calc(144 * var(--u));
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(1.8 * var(--u));
+}
+
+.mode-card-v {
+  background: var(--surface);
+  border: 3px solid var(--amber-200);
+  border-radius: calc(2.2 * var(--u));
+  padding: calc(1.8 * var(--u)) calc(1.6 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(1 * var(--u));
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mode-card-v:hover {
+  transform: translateY(calc(-0.35 * var(--u)));
+  box-shadow: var(--shadow-md);
+}
+
+.mode-card-v:active { transform: scale(0.97); }
+.mode-card-orange:hover { border-color: var(--orange-600); }
+
+.mode-icon-orange {
+  background: #FFF7ED;
+  color: var(--orange-600);
+  border: 2.5px solid #FED7AA;
+}
+
+.tag-orange { background: #FFEDD5; color: #9A3412; }
+.cta-orange { background: var(--orange-600); }
+
+.mode-card-v .mode-icon {
+  width: calc(7.4 * var(--u));
+  height: calc(7.4 * var(--u));
+  font-size: calc(3.8 * var(--u));
+  margin-bottom: calc(0.2 * var(--u));
+}
+
+.mode-card-v h3 {
+  font-size: calc(2 * var(--u));
+  font-weight: 900;
+  color: var(--ink-900);
+  margin-bottom: calc(0.35 * var(--u));
+}
+
+.mode-card-v p {
+  font-size: calc(1.22 * var(--u));
+  color: var(--ink-500);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.mode-card-v .mode-cta {
+  width: 100%;
+  padding: calc(1 * var(--u));
+  font-size: calc(1.38 * var(--u));
+  text-align: center;
+}
+
+/* Banner Bawah: Mode Adu / VS (3 Pilihan Game Beradu) */
+.vs-banner-card {
+  width: 100%;
+  max-width: calc(144 * var(--u));
+  background: linear-gradient(135deg, #FAF5FF 0%, #FFFFFF 50%, #FFF7ED 100%);
+  border: 3px solid var(--purple-200);
+  border-radius: calc(2.2 * var(--u));
+  padding: calc(1.4 * var(--u)) calc(2.2 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(2 * var(--u));
+  box-shadow: var(--shadow-sm);
+}
+
+.vs-banner-info {
+  display: flex;
+  align-items: center;
+  gap: calc(1.5 * var(--u));
+}
+
+.vs-banner-info h3 {
+  font-size: calc(2.1 * var(--u));
+  font-weight: 900;
+  color: var(--ink-900);
+}
+
+.vs-banner-info p {
+  font-size: calc(1.25 * var(--u));
+  color: var(--ink-500);
+  font-weight: 600;
+}
+
+.vs-banner-btns {
+  display: flex;
+  align-items: center;
+  gap: calc(1.2 * var(--u));
+}
+
+.vs-banner-btns .vs-sub-btn {
+  padding: calc(1.15 * var(--u)) calc(2 * var(--u));
+  font-size: calc(1.42 * var(--u));
+  white-space: nowrap;
+}
+
+.vs-sub-train { background: var(--orange-600); }

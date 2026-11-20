@@ -1,0 +1,16 @@
+{
+  "name": "Alfabet Ceria - Belajar Huruf, Bola Boni & Kereta Cepat Wush",
+  "short_name": "Alfabet Ceria",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#FAF7EE",
+  "theme_color": "#FAF7EE",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
